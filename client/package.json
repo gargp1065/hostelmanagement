@@ -9,6 +9,7 @@
     "axios": "^0.21.0",
     "classnames": "^2.2.6",
     "font-awesome": "^4.7.0",
+    "geocoder": "^0.2.3",
     "jwt-decode": "^3.1.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

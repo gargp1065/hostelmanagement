@@ -100,9 +100,6 @@ class StudentPage extends Component {
                             <img src={leave} className="card-img-top" alt="Cleaning" />
                             <div className="card-body">
                                 <h5 className="card-title">Apply for holiday</h5>
-                                <button className="btn btn-primary" onClick={this.toggleModal}>
-                                    
-                                </button>
                                 <Button className="btn-primary" onClick = {this.toggleComplaintModal}>
                                     Apply
                                 </Button>

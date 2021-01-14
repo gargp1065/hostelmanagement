@@ -15,8 +15,8 @@ module.exports = function staffValidation(data) {
   if (Validator.isEmpty(data.occupation)) {
     errors.occupation = "Staff occupation is required";
   }
-  if (!Validator.isLength(data.mobile, { min: 6, max: 14 })) {
-    errors.mobile = "Contact number should be betweenn 6 to 14 digits"
+  if (!Validator.isLength(data.mobile, { min: 10, max: 10 })) {
+    errors.mobile = "Contact number should be of 10 digits"
   }
   if (Validator.isEmpty(data.mobile)) {
     errors.mobile = "Staff contact is required";

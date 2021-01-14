@@ -20,19 +20,17 @@ class Login extends Component {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/dashboard");
     }
-    // else this.props.histo
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      // console.log(nextProps.auth)
       if(nextProps.auth.user.admin) {
         this.props.history.push("/dashboard");
       }
       else this.props.history.push("/studentPage");
     }
     if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
+      this.setState({ errors: nextProps.errors.data });
     }
   }
 

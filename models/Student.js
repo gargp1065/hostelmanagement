@@ -96,20 +96,17 @@ const StudentSchema = new Schema({
     type: String,
     required: true
   },
-  avatar: {
-    type: String
-  },
   date: {
     type: Date,
     default: Date.now
   },
   room_alloted: {
     type: Boolean,
-    default: true
+    default: false
   },
   room_number: {
     type: Number,
-    default: 150
+    default: 0
   }
 });
 

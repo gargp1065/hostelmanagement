@@ -7,10 +7,10 @@ import { logoutUser } from "../../actions/authActions";
 class Navbar extends Component {
   constructor() {
     super();
-    this.onLougoutClick = this.onLougoutClick.bind(this);
+    this.onLogoutClick = this.onLogoutClick.bind(this);
   }
 
-  onLougoutClick(e) {
+  onLogoutClick(e) {
     e.preventDefault();
     this.props.logoutUser(this.props.history);
   }
@@ -21,7 +21,7 @@ class Navbar extends Component {
     const authLinks = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
-          <Link onClick={this.onLougoutClick.bind(this)} className="nav-link" to="/">
+          <Link onClick={this.onLogoutClick.bind(this)} className="nav-link" to="/">
             LogOut
           </Link>
         </li>

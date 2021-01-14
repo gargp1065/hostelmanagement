@@ -126,7 +126,7 @@ class ComplaintAdmin extends Component {
                     }
                 </div>
                 
-                <Modal style={{margin: '26.75rem auto'}} isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                <Modal style={{margin: '20rem auto'}} isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Complaint Details</ModalHeader>
                     <ModalBody>
                         
@@ -135,7 +135,7 @@ class ComplaintAdmin extends Component {
                             {/* {console.log(this.state.openComplaint)} */}
                         </div>
                         <div>
-                        <b style={ {fontSize: '14px'}}>Complaint Body: </b><p2>{this.state.openComplaint.complaint && this.state.openComplaint.complaint.userComplaint}</p2>
+                        <b>Complaint Body: </b><p2>{this.state.openComplaint.complaint && this.state.openComplaint.complaint.userComplaint}</p2>
                         </div>
 
 

@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
+import Geocode from "react-geocode";
+var geocoder = require('geocoder');
 
 class Register extends Component {
   constructor() {
@@ -32,11 +34,14 @@ class Register extends Component {
       course: "",
       admission_year: "",
       duration: "",
+      latitude: "",
+      longitude: "",
       errors: {}
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.showPosition = this.showPosition.bind(this);
   }
 
   componentDidMount() {
@@ -55,7 +60,15 @@ class Register extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onSubmit(e) {
+  showPosition(position) {
+    this.setState({
+      latitude: position.coords.latitude, 
+      longitude: position.coords.longitude
+    })
+    alert(`{this.state.latitude} + {this.state.longitude}`);
+  }
+
+    onSubmit(e) {
     e.preventDefault();
 
     const newUser = {
@@ -88,7 +101,7 @@ class Register extends Component {
   }
 
   render() {
-    // const { errors } = this.state;
+    const { errors } = this.state;
 
     return (
       
@@ -108,33 +121,33 @@ class Register extends Component {
                       <label htmlFor="name"> Name</label>
                       <input
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg",{
+                         "is-invalid": errors.name
+                         })}
                         placeholder="Name"
                         name="name"
                         value={this.state.name}
                         onChange={this.onChange}
                       />
-                      {/* {errors.name && (
+                      {errors.name && (
                         <div className="invalid-feedback">{errors.name}</div>
-                      )} */}
+                      )}
                     </div>
                     <div className="col-md-6 col-sm-12 form-group">
                       <label htmlFor="dob">D.O.B</label>
                       <input
                         type="date"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg",{
+                          "is-invalid": errors.dob
+                        })}
                         placeholder="D.O.B"
                         name="dob"
                         value={this.state.dob}
                         onChange={this.onChange}
                       />
-                      {/* {errors.dob && (
+                      {errors.dob && (
                         <div className="invalid-feedback">{errors.dob}</div>
-                      )} */}
+                      )}
                     </div>
                   </div>
                   <div className="row"> 
@@ -142,9 +155,9 @@ class Register extends Component {
                       <label htmlFor="gender">Gender</label>
                       <select
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg",{
+                          "is-invalid": errors.gender
+                        })}
                         placeholder="Gender"
                         name="gender"
                         value={this.state.gender}
@@ -155,31 +168,31 @@ class Register extends Component {
                       <option value="female">Female</option>
                       <option value="transgender">Transgender</option>  
                       </select>
-                      {/* {errors.gender && (
+                      {errors.gender && (
                         <div className="invalid-feedback">{errors.gender}</div>
-                      )} */}
+                      )}
                     </div>
                     <div className="col-md-6 col-sm-12 form-group">
                       <label htmlFor="category">Category</label>
                       <select
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg",{
+                          "is-invalid": errors.category
+                        })}
                         placeholder="Category"
                         name="category"
                         value={this.state.category}
                         onChange={this.onChange}
-                      >
+                      > 
                       <option value>Select Cateogry</option>
                       <option value="general">General</option>
                       <option value="st">ST</option>
                       <option value="sc">SC</option>
                       <option value="obc  ">OBC</option>  
                       </select>
-                      {/* {errors.category && (
+                      {errors.category && (
                         <div className="invalid-feedback">{errors.category}</div>
-                      )} */}
+                      )}
                     </div>
                   </div>
 
@@ -187,50 +200,51 @@ class Register extends Component {
                     <label htmlFor="address">Address</label>
                     <input
                       type="text"
-                      className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                      className={classnames("form-control form-control-lg",{
+                          "is-invalid": errors.address
+                        })}
                       placeholder="Address"
                       name="address"
                       value={this.state.address}
                       onChange={this.onChange}
                     />
-                    {/* {errors.address && (
+                    <i onClick={this.detectMe} class="fas fa-search-location">Detect Me</i>
+                    {errors.address && (
                       <div className="invalid-feedback">{errors.address}</div>
-                    )} */}
+                    )}
                   </div>
                   <div className="row">
                     <div className="col-md-6 col-sm-12 form-group">
                       <label htmlFor="telnum">Candidate Number</label>
                       <input
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg", {
+                          "is-invalid": errors.telnum
+                        })}
                         placeholder="Contact Number"
                         name="telnum"
                         value={this.state.telnum}
                         onChange={this.onChange}
                       />
-                      {/* {errors.telnum && (
+                      {errors.telnum && (
                         <div className="invalid-feedback">{errors.telnum}</div>
-                      )} */}
+                      )}
                     </div>
                     <div className="col-md-6 col-sm-12 form-group">
                       <label htmlFor="email">Email Address</label>
                       <input
                         type="email"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg",{
+                          "is-invalid": errors.email
+                        })}
                         placeholder="Email Address"
                         name="email"
                         value={this.state.email}
                         onChange={this.onChange}
                       />
-                      {/* {errors.email && (
+                      {errors.email && (
                         <div className="invalid-feedback">{errors.email}</div>
-                      )} */}
+                      )}
                     </div>
                   </div>
                   
@@ -239,33 +253,33 @@ class Register extends Component {
                       <label htmlFor="password">Password</label>
                       <input
                         type="password"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg", {
+                          "is-invalid": errors.password
+                        })}
                         placeholder="Password"
                         name="password"
                         value={this.state.password}
                         onChange={this.onChange}
                       />
-                      {/* {errors.password && (
+                      {errors.password && (
                         <div className="invalid-feedback">{errors.password}</div>
-                      )} */}
+                      )}
                     </div>
                     <div className="col-md-6 col-sm-12 form-group">
                       <label htmlFor="password2">Confirm Password</label>
                       <input
                         type="password"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg", {
+                          "is-invalid": errors.duration
+                        })}
                         placeholder="Confirm Password"
                         name="password2"
                         value={this.state.password2}
                         onChange={this.onChange}
                       />
-                      {/* {errors.password && (
+                      {errors.password && (
                         <div className="invalid-feedback">{errors.password2}</div>
-                      )} */}
+                      )}
                     </div>
                   </div>
                 </div>
@@ -280,33 +294,33 @@ class Register extends Component {
                       <label htmlFor="father_name">Father Name</label>
                       <input
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg", {
+                          "is-invalid": errors.father_name
+                        })}
                         placeholder="Father Name"
                         name="father_name"
                         value={this.state.father_name}
                         onChange={this.onChange}
                       />
-                      {/* {errors.father_name && (
+                      {errors.father_name && (
                         <div className="invalid-feedback">{errors.father_name}</div>
-                      )} */}
+                      )}
                     </div>
                     <div className="form-group col-md-6 col-sm-12">
                       <label htmlFor="mother_name">Mother Name</label>
                       <input
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg", {
+                          "is-invalid": errors.mother_name
+                        })}
                         placeholder="Mother Name"
                         name="mother_name"
                         value={this.state.mother_name}
                         onChange={this.onChange}
                       />
-                      {/* {errors.mother_name && (
+                      {errors.mother_name && (
                         <div className="invalid-feedback">{errors.mother_name}</div>
-                      )} */}
+                      )}
                     </div>
                   </div>
                   <div className="row">
@@ -314,34 +328,34 @@ class Register extends Component {
                       <label htmlFor="father_telnum">Father Number</label>
                       <input
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg", {
+                          "is-invalid": errors.father_telnum
+                        })}
                         placeholder="Father Number"
                         name="father_telnum"
                         value={this.state.father_telnum}
                         onChange={this.onChange}
                       />
-                      {/* {errors.father_telnum && (
+                      {errors.father_telnum && (
                         <div className="invalid-feedback">{errors.father_telnum}</div>
-                      )} */}
+                      )}
                     </div>
 
                     <div className="form-group col-md-6 col-sm-12 ">
                       <label htmlFor="mother_telnum">Mother Numer</label>
                       <input
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg", {
+                          "is-invalid": errors.mother_telnum
+                        })}
                         placeholder="Mother Numer"
                         name="mother_telnum"
                         value={this.state.mother_telnum}
                         onChange={this.onChange}
                       />
-                      {/* {errors.mother_telnum && (
+                      {errors.mother_telnum && (
                         <div className="invalid-feedback">{errors.mother_telnum}</div>
-                      )} */}
+                      )}
                     </div>
                   </div>
                   
@@ -350,34 +364,34 @@ class Register extends Component {
                       <label htmlFor="father_occupation">Father Occupation</label>
                       <input
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg",{
+                          "is-invalid": errors.father_occupation
+                        })}
                         placeholder="Father Occupation"
                         name="father_occupation"
                         value={this.state.father_occupation}
                         onChange={this.onChange}
                       />
-                      {/* {errors.father_occupation && (
+                      {errors.father_occupation && (
                         <div className="invalid-feedback">{errors.father_occupation}</div>
-                      )} */}
+                      )}
                     </div>
 
                     <div className="form-group col-md-6 col-sm-12 ">
                       <label htmlFor="mother_occupation">Mother Occupation</label>
                       <input
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg",{
+                          "is-invalid": errors.mother_occupation
+                        })}
                         placeholder="Mother Occupation"
                         name="mother_occupation"
                         value={this.state.mother_occupation}
                         onChange={this.onChange}
                       />
-                      {/* {errors.mother_occupation && (
+                      {errors.mother_occupation && (
                         <div className="invalid-feedback">{errors.mother_occupation}</div>
-                      )} */}
+                      )}
                     </div>
                   </div>
                 </div>
@@ -392,66 +406,66 @@ class Register extends Component {
                       <label htmlFor="guardian_name">Guardian Name</label>
                       <input
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg", {
+                          "is-invalid": errors.guardian_name
+                        })}
                         placeholder="Guardian Name"
                         name="guardian_name"
                         value={this.state.guardian_name}
                         onChange={this.onChange}
                       />
-                      {/* {errors.guardian_name && (
+                      {errors.guardian_name && (
                         <div className="invalid-feedback">{errors.guardian_name}</div>
-                      )} */}
+                      )}
                     </div>
                     <div className="col-md-6 col-sm-12 form-group">
                       <label htmlFor="guardian_relation">Relation</label>
                       <input
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg", {
+                          "is-invalid": errors.guardian_relation
+                        })}
                         placeholder="Relation"
                         name="guardian_relation"
                         value={this.state.guardian_relation}
                         onChange={this.onChange}
                       />
-                      {/* {errors.guardian_relation && (
+                      {errors.guardian_relation && (
                         <div className="invalid-feedback">{errors.guardian_relation}</div>
-                      )} */}
+                      )}
                     </div>
                     <div className="col-md-6 col-sm-12 form-group">
                       <label htmlFor="guardian_telnum">Contact Numer</label>
                       <input
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg", {
+                          "is-invalid": errors.guardian_telnum
+                        })}
                         placeholder="Contact Number"
                         name="guardian_telnum"
                         value={this.state.guardian_telnum}
                         onChange={this.onChange}
                       />
-                      {/* {errors.guardian_telnum && (
+                      {errors.guardian_telnum && (
                         <div className="invalid-feedback">{errors.guardian_telnum}</div>
-                      )} */}
+                      )}
                     </div>
                   </div>
                   <div className="form-group">
                     <label htmlFor="guardian_add">Address</label>
                     <input
                       type="text"
-                      className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                      className={classnames("form-control form-control-lg",{
+                          "is-invalid": errors.guardian_add
+                        })}
                       placeholder="Address"
                       name="guardian_add"
                       value={this.state.guardian_add}
                       onChange={this.onChange}
                     />
-                    {/* {errors.guardian_add && (
+                    {errors.guardian_add && (
                       <div className="invalid-feedback">{errors.guardian_add}</div>
-                    )} */}
+                    )}
                   </div>
                 </div>   
 
@@ -465,33 +479,33 @@ class Register extends Component {
                       <label htmlFor="college_name">College Name</label>
                       <input
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg",{
+                          "is-invalid": errors.college_name
+                        })}
                         placeholder="College Name"
                         name="college_name"
                         value={this.state.college_name}
                         onChange={this.onChange}
                       />
-                      {/* {errors.college_name && (
+                      {errors.college_name && (
                         <div className="invalid-feedback">{errors.college_name}</div>
-                      )} */}
+                      )}
                     </div>
                     <div className="form-group col-md-6 col-sm-12">
                       <label htmlFor="course">Course</label>
                       <input
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg",{
+                          "is-invalid": errors.course
+                        })}
                         placeholder="Course"
                         name="course"
                         value={this.state.course}
                         onChange={this.onChange}
                       />
-                      {/* {errors.course && (
+                      {errors.course && (
                         <div className="invalid-feedback">{errors.course}</div>
-                      )} */}
+                      )}
                     </div>
                   </div>
 
@@ -500,33 +514,33 @@ class Register extends Component {
                       <label htmlFor="admission_year">Admission Year</label>
                       <input
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg",{
+                          "is-invalid": errors.admission_year
+                        })}
                         placeholder="Admission Year"
                         name="admission_year"
                         value={this.state.admission_year}
                         onChange={this.onChange}
                       />
-                      {/* {errors.admission_year && (
+                      {errors.admission_year && (
                         <div className="invalid-feedback">{errors.admission_year}</div>
-                      )} */}
+                      )}
                     </div>
                     <div className="form-group col-md-6 col-sm-12">
                       <label htmlFor="duration">Duration</label>
                       <input
                         type="text"
-                        className={classnames("form-control form-control-lg")}//,{
-                        //   "is-invalid": errors.duration
-                        // })}
+                        className={classnames("form-control form-control-lg", {
+                          "is-invalid": errors.duration
+                        })}
                         placeholder="Duration of Course"
                         name="duration"
                         value={this.state.duration}
                         onChange={this.onChange}
                       />
-                      {/* {errors.duration && (
+                      {errors.duration && (
                         <div className="invalid-feedback">{errors.duration}</div>
-                      )} */}
+                      )}
                     </div>
                   </div>
                 </div>

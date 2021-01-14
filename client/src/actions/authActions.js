@@ -41,10 +41,14 @@ export const loginUser = userData => dispatch => {
 
     })
     .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err
-      })
+      {
+        console.log(err.response);
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response
+        })
+      }
+      
     );
 };
 

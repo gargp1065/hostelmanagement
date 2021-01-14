@@ -14,7 +14,7 @@ class ComplaintModal extends Component {
         }
         // this.toggleModal = this.toggleModal.bind(this); 
     }
-    componentWillReceiveProps (nextProps) {
+    UNSAFE_componentWillReceiveProps (nextProps) {
         if(nextProps.isModalOpen) {
             axios
         .get(`/api/student/complaint/${this.props.auth.user.email}`).then(res =>{
